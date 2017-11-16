@@ -27,18 +27,22 @@
             </template>
           </div>
           <div v-if="column.filterable">
-            <template v-if="column.fliterableSettings">
-              <select v-if="column.fliterableSettings.type === 'select'"
-                      @change="filterSelectChange($event.target.value, column.name)">
-                <option v-for="option in column.fliterableSettings.options" :value="option.value">{{
-                  option.label }}
-                </option>
-              </select>
-            </template>
-            <input v-else @keyup="filterInputKeyup($event.target.value, column.name)" class="filter-input"
-                   style="width:  100%;" placeholder="Search">
+            <slot :name="'filter-' + column.name | lowerCase"
+                  :columnName="column.name"
+                  :settings="column.fliterableSettings ? column.fliterableSettings : null">
+              <template v-if="column.fliterableSettings">
+                <select v-if="column.fliterableSettings.type === 'select'"
+                        @change="filterSelectChange($event.target.value, column.name)">
+                  <option v-for="option in column.fliterableSettings.options" :value="option.value">
+                    {{ option.label }}
+                  </option>
+                </select>
+              </template>
+              <input v-else @keyup="filterInputKeyup($event.target.value, column.name)" class="filter-input"
+                     style="width:  100%;" placeholder="Search">
+            </slot>
           </div>
-          <div v-else style="height: 26px;">
+          <div v-else style="height: 24px;">
 
           </div>
         </th>
