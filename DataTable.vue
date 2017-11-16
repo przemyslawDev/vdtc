@@ -1,5 +1,15 @@
 <template>
   <div class="table-responsive">
+    <label>
+      Show
+      <select @change="perPageChange($event.target.value)">
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
+    </label>
     <table class="table table-bordered">
       <thead>
       <tr>
@@ -63,7 +73,8 @@
     data () {
       return {
         sort: {},
-        filter: {}
+        filter: {},
+        per_page: 0
       }
     },
     props: {
@@ -80,10 +91,17 @@
         default: null
       }
     },
+    mounted () {
+      this.per_page = this.pagination.per_page
+    },
     components: {
       'pagination': Pagination
     },
     methods: {
+      perPageChange (value) {
+        this.per_page = value
+        this.$emit('perpage', this.per_page)
+      },
       filterInputKeyup: _.debounce(function (value, columnName) {
         this.filter[columnName] = value
         this.$emit('filter', this.filter)
@@ -92,28 +110,28 @@
         this.filter[columnName] = value
         this.$emit('filter', this.filter)
       },
-      throwPage (val) {
-        this.$emit('throwpage', val)
+      throwPage (value) {
+        this.$emit('throwpage', value)
       },
-      getIndex (val) {
-        let indexes = [val]
-        if (val.indexOf('.') > 0) {
-          indexes = val.split('.')
+      getIndex (value) {
+        let indexes = [value]
+        if (value.indexOf('.') > 0) {
+          indexes = value.split('.')
         }
         return indexes
       },
       getValue (object, indexes) {
-        let val = null
+        let value = null
         for (let i = 0; i < indexes.length; i++) {
           if (i !== indexes.length - 1) {
             object = object[indexes[i]]
           } else {
             if (object) {
-              val = object[indexes[i]]
+              value = object[indexes[i]]
             }
           }
         }
-        return val
+        return value
       },
       sortColumn (columnName) {
         let sort_a = this.sort
@@ -132,9 +150,9 @@
       }
     },
     filters: {
-      lowerCase (val) {
-        if (val) {
-          return val.toLowerCase()
+      lowerCase (value) {
+        if (value) {
+          return value.toLowerCase()
         }
       }
     }
