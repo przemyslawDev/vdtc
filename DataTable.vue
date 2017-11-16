@@ -1,6 +1,6 @@
 <template>
   <div class="table-responsive">
-    <label>
+    <label v-if="settings.perpage">
       Show
       <select @change="perPageChange($event.target.value)">
         <option value="10">10</option>
@@ -89,6 +89,10 @@
       pagination: {
         type: Object,
         default: null
+      },
+      settings: {
+        type: Object,
+        required: true
       }
     },
     mounted () {
