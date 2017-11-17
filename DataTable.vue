@@ -33,11 +33,11 @@
           <div v-if="column.filterable">
             <slot :name="'filter-' + column.name | lowerCase"
                   :columnName="column.name"
-                  :settings="column.fliterableSettings ? column.fliterableSettings : null">
-              <template v-if="column.fliterableSettings">
-                <select v-if="column.fliterableSettings.type === 'select'"
+                  :settings="column.filterableSettings ? column.filterableSettings : null">
+              <template v-if="column.filterableSettings">
+                <select v-if="column.filterableSettings.type === 'select'"
                         @change="filterSelectChange($event.target.value, column.name)">
-                  <option v-for="option in column.fliterableSettings.options"
+                  <option v-for="option in column.filterableSettings.options"
                           :value="option.value">
                     {{ option.label }}
                   </option>
