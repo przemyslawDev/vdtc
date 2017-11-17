@@ -18,11 +18,15 @@
             {{ column.label }}
             <template v-if="column.sortable">
               <a @click="sortColumn(column.name)">
-                                <span v-if="sort[column.name] === 'asc'" class="glyphicon glyphicon-sort-by-attributes"
+                                <span v-if="sort[column.name] === 'asc'"
+                                      class="glyphicon glyphicon-sort-by-attributes"
                                       aria-hidden="true"></span>
                 <span v-else-if="sort[column.name] === 'desc'"
-                      class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>
-                <span v-else class="glyphicon glyphicon-sort" aria-hidden="true"></span>
+                      class="glyphicon glyphicon-sort-by-attributes-alt"
+                      aria-hidden="true"></span>
+                <span v-else
+                      class="glyphicon glyphicon-sort"
+                      aria-hidden="true"></span>
               </a>
             </template>
           </div>
@@ -33,12 +37,15 @@
               <template v-if="column.fliterableSettings">
                 <select v-if="column.fliterableSettings.type === 'select'"
                         @change="filterSelectChange($event.target.value, column.name)">
-                  <option v-for="option in column.fliterableSettings.options" :value="option.value">
+                  <option v-for="option in column.fliterableSettings.options"
+                          :value="option.value">
                     {{ option.label }}
                   </option>
                 </select>
               </template>
-              <input v-else @keyup="filterInputKeyup($event.target.value, column.name)" class="filter-input"
+              <input v-else @keyup="filterInputKeyup($event.target.value, column.name)"
+                     :value="filter[column.name] ? filter[column.name] : (column.filterableSettings && column.filterableSettings.defaultValue ? column.filterableSettings.defaultValue : '')"
+                     class="filter-input"
                      style="width:  100%;" placeholder="Search">
             </slot>
           </div>
@@ -66,7 +73,9 @@
       </tr>
       </tbody>
     </table>
-    <pagination v-if="pagination" :info="pagination" @throwpage="throwPage"></pagination>
+    <pagination v-if="pagination"
+                :info="pagination"
+                @throwpage="throwPage"></pagination>
   </div>
 </template>
 
@@ -100,6 +109,7 @@
       }
     },
     mounted () {
+      this.setDefaultFilterValues()
       this.per_page = this.pagination.per_page
     },
     components: {
@@ -142,7 +152,7 @@
         return value
       },
       sortColumn (columnName) {
-        let sort_a = this.sort
+        let sort_a = []
         this.sort = []
         if (typeof sort_a[columnName] !== 'undefined') {
           if (sort_a[columnName] === 'asc') {
@@ -155,6 +165,15 @@
         }
         this.sort = sort_a
         this.$emit('sort', this.sort)
+      },
+      setDefaultFilterValues () {
+        for(let index in this.columns) {
+          let column = this.columns[index]
+          if(column.filterableSettings && column.filterableSettings.defaultValue) {
+            this.filter[column.name] = column.filterableSettings.defaultValue
+            this.$emit('filter', this.filter)
+          }
+        }
       }
     },
     filters: {
