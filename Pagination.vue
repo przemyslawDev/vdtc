@@ -2,8 +2,13 @@
   <div v-if="hasPages">
     <ul v-if="info.total > 0" class="pagination">
       <li :class="isFirstPage ? 'disabled' : ''">
-        <a @click="previousPage" aria-label="Previous">
+        <a @click="firstPage" aria-label="First">
           <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li :class="isFirstPage ? 'disabled' : ''">
+        <a @click="previousPage" aria-label="Previous">
+          <span aria-hidden="true">&lt;</span>
         </a>
       </li>
       <li v-if="getBackwardPage">
@@ -23,6 +28,11 @@
       </li>
       <li :class="isLastPage ? 'disabled' : ''">
         <a @click="nextPage" aria-label="Next">
+          <span aria-hidden="true">&gt;</span>
+        </a>
+      </li>
+      <li :class="isLastPage ? 'disabled': ''">
+        <a @click="lastPage" aria-label="Last">
           <span aria-hidden="true">&raquo;</span>
         </a>
       </li>
@@ -61,20 +71,26 @@
     methods: {
       nextPage () {
         if (this.info.current_page !== this.info.last_page) {
-          this.$emit('throwpage', this.info.current_page + 1)
+          this.$emit('throw-page', this.info.current_page + 1)
         }
       },
       previousPage () {
         if (this.info.current_page !== 1) {
-          this.$emit('throwpage', this.info.current_page - 1)
+          this.$emit('throw-page', this.info.current_page - 1)
         }
       },
       forwardPage () {
-        this.$emit('throwpage', this.info.current_page + 1)
+        this.$emit('throw-page', this.info.current_page + 1)
       },
       backwardPage () {
-        this.$emit('throwpage', this.info.current_page - 1)
+        this.$emit('throw-page', this.info.current_page - 1)
       },
+      firstPage() {
+        this.$emit('throw-page', 1)
+      },
+      lastPage() {
+        this.$emit('throw-page', this.info.last_page)
+      }
     }
   }
 </script>
