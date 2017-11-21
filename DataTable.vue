@@ -1,6 +1,6 @@
 <template>
   <div class="table-responsive">
-    <label v-if="settings.perpage">
+    <label v-if="settings.perPage">
       Show
       <select @change="perPageChange($event.target.value)">
         <option value="10">10</option>
@@ -75,7 +75,7 @@
     </table>
     <pagination v-if="pagination"
                 :info="pagination"
-                @throwpage="throwPage"></pagination>
+                @throw-page="throwPage"></pagination>
   </div>
 </template>
 
@@ -87,7 +87,7 @@
       return {
         sort: {},
         filter: {},
-        per_page: 0
+        perPage: 0
       }
     },
     props: {
@@ -110,15 +110,15 @@
     },
     mounted () {
       this.setDefaultFilterValues()
-      this.per_page = this.pagination.per_page
+      this.perPage = this.pagination.perPage
     },
     components: {
       'pagination': Pagination
     },
     methods: {
       perPageChange (value) {
-        this.per_page = value
-        this.$emit('perpage', this.per_page)
+        this.perPage = value
+        this.$emit('per-page', this.perPage)
       },
       filterInputKeyup: _.debounce(function (value, columnName) {
         this.filter[columnName] = value
@@ -129,7 +129,7 @@
         this.$emit('filter', this.filter)
       },
       throwPage (value) {
-        this.$emit('throwpage', value)
+        this.$emit('throw-page', value)
       },
       getIndex (value) {
         let indexes = [value]
@@ -152,18 +152,18 @@
         return value
       },
       sortColumn (columnName) {
-        let sort_a = []
+        let sortA = []
         this.sort = []
-        if (typeof sort_a[columnName] !== 'undefined') {
-          if (sort_a[columnName] === 'asc') {
-            sort_a[columnName] = 'desc'
+        if (typeof sortA[columnName] !== 'undefined') {
+          if (sortA[columnName] === 'asc') {
+            sortA[columnName] = 'desc'
           } else {
-            sort_a[columnName] = 'asc'
+            sortA[columnName] = 'asc'
           }
         } else {
-          sort_a[columnName] = 'asc'
+          sortA[columnName] = 'asc'
         }
-        this.sort = sort_a
+        this.sort = sortA
         this.$emit('sort', this.sort)
       },
       setDefaultFilterValues () {
