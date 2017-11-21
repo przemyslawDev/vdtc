@@ -2,7 +2,6 @@
 
 ## Usage
 
-```
 Download the repository and add the components wherever you want in your project
 
 The next step is to use the component, example:
@@ -32,6 +31,7 @@ The next step is to use the component, example:
 </script>
 
 ```
-	For more information please visit [documentation in the Wiki pages](https://github.com/przemyslawDev/vdtc/wiki).
-```
+
+For more information please visit [documentation in the Wiki pages](https://github.com/przemyslawDev/vdtc/wiki).
+
 
