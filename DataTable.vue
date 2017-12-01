@@ -1,5 +1,5 @@
 <template>
-  <div class="table-responsive">
+    <div>
     <label v-if="settings.perPage">
       Show
       <select @change="perPageChange($event.target.value)">
@@ -13,7 +13,7 @@
     <table class="table table-bordered">
       <thead>
       <tr>
-        <th v-for="column in columns">
+        <th :style="column.style" v-for="column in columns">
           <div>
             {{ column.label }}
             <template v-if="column.sortable">
@@ -123,7 +123,7 @@
       filterInputKeyup: _.debounce(function (value, columnName) {
         this.filter[columnName] = value
         this.$emit('filter', this.filter)
-      }, 500),
+      }, 2000),
       filterSelectChange (value, columnName) {
         this.filter[columnName] = value
         this.$emit('filter', this.filter)
